@@ -18,3 +18,23 @@
 	path = square-master/v5
 	url = ./
 	branch = SquareMaster-5
+[submodule "concurrent-network/v1"]
+	path = concurrent-network/v1
+	url = ./
+	branch = ConcurrentNetwork-1
+[submodule "concurrent-network/v2"]
+	path = concurrent-network/v2
+	url = ./
+	branch = ConcurrentNetwork-2
+[submodule "concurrent-network/v3"]
+	path = concurrent-network/v3
+	url = ./
+	branch = ConcurrentNetwork-3
+[submodule "concurrent-network/v4"]
+	path = concurrent-network/v4
+	url = ./
+	branch = ConcurrentNetwork-4
+[submodule "concurrent-network/v5"]
+	path = concurrent-network/v5
+	url = ./
+	branch = ConcurrentNetwork-5
