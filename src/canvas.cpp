@@ -32,6 +32,7 @@ void Canvas::clear()
 {
     count = 0;
     selected = false;
+    dragPosition = QPoint();
 
     // 请求重绘
     update();
@@ -58,6 +59,7 @@ void Canvas::mousePressEvent(QMouseEvent *event)
 
         selected = true; // 更新选中状态
         grabKeyboard(); // 捕获键盘事件
+        dragPosition = event->pos(); // 更新鼠标拖动位置
 
         // 将选中正方形移至顶部
         for (int i = selectedIndex; i < count; ++i)
@@ -72,6 +74,7 @@ void Canvas::mousePressEvent(QMouseEvent *event)
     {
         selected = false; // 更新选中状态
         releaseKeyboard(); // 释放键盘捕获
+        dragPosition = QPoint(); // 重置拖动位置，释放拖动
     }
     // 请求重绘
     update();
@@ -79,12 +82,37 @@ void Canvas::mousePressEvent(QMouseEvent *event)
 
 void Canvas::mouseReleaseEvent(QMouseEvent *event)
 {
-    // TODO
+    // 释放拖动
+    if (event->button() == Qt::LeftButton)
+    {
+        mouseMoveEvent(event); // 最后一次更新坐标
+        dragPosition = QPoint(); // 重置拖动位置，释放拖动
+    }
 }
 
 void Canvas::mouseMoveEvent(QMouseEvent *event)
 {
-    // TODO
+    // 鼠标拖动
+    if (!selected || dragPosition.isNull()) {
+      return;
+    }
+
+    // 根据前后两帧差值更新位置
+    squares[count - 1].translate(event->pos().x() - dragPosition.x(),
+                                 event->pos().y() - dragPosition.y());
+    dragPosition = event->pos(); // 更新鼠标坐标
+    // 不可超出双击生成范围，即±30
+    if (squares[count - 1].left() < -30)
+        squares[count - 1].moveLeft(-30);
+    if (squares[count - 1].right() > 630)
+        squares[count - 1].moveLeft(630);
+    if (squares[count - 1].top() < -30)
+        squares[count - 1].moveTop(-30);
+    if (squares[count - 1].bottom() > 630)
+        squares[count - 1].moveBottom(630);
+
+    // 请求重绘
+    update();
 }
 
 void Canvas::mouseDoubleClickEvent(QMouseEvent *event)
