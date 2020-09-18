@@ -37,6 +37,7 @@ private:
 
     QRect squares[6]; // 最多6个正方形，固定尺寸、样式、遮挡关系，只需记录位置
     int count; // 正方形数量
+    bool selected; // 已选中正方形（选中正方形会提升至顶层，无需记录编号）
 };
 
 #endif // CANVAS_H
