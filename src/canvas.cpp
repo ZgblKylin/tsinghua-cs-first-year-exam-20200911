@@ -1,6 +1,9 @@
 ﻿#include "canvas.h"
 #include "ui_canvas.h"
 
+#include <QFile>
+#include <QFileDialog>
+#include <QTextStream>
 #include <QMouseEvent>
 #include <QKeyEvent>
 #include <QPainter>
@@ -20,12 +23,46 @@ Canvas::~Canvas()
 
 void Canvas::open()
 {
-    // TODO
+    // 获取文件名
+    QString path = QFileDialog::getOpenFileName(this, "打开", "", "*.txt");
+    if (path.isEmpty())
+        return;
+    clear();
+
+    QFile file(path);
+    file.open(QFile::ReadOnly);
+    QTextStream stream(&file);
+    stream.skipWhiteSpace(); // 跳过空格和换行
+    for (int i = 0; i < 6; ++i, ++count) // 自动计算count
+    {
+        int x, y;
+        stream >> x;
+        if (stream.status() != QTextStream::Ok)
+            break;
+        stream >> y;
+        squares[i] = QRect(x, y, 60, 60);
+    }
+    file.close();
+
+    // 请求重绘
+    update();
 }
 
 void Canvas::save()
 {
-    // TODO
+    // 获取保存文件名
+    QString path = QFileDialog::getSaveFileName(this, "保存", "", "*.txt");
+    if (path.isEmpty())
+        return;
+
+    QFile file(path);
+    file.open(QFile::WriteOnly | QFile::Truncate | QFile::Text);
+    QTextStream stream(&file);
+    for (int i = 0; i < count; ++i)
+    {
+        stream << squares[i].x() << ' ' << squares[i].y() << endl;
+    }
+    file.close();
 }
 
 void Canvas::clear()
