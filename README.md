@@ -1,4 +1,4 @@
-# 并发网络程序 难度2
+# 并发网络程序 难度3
 
 ![](images/ConcurrentNetwork-1.jpg)
 
