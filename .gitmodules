@@ -1,0 +1,20 @@
+[submodule "square-master/v1"]
+	path = square-master/v1
+	url = ./
+	branch = SquareMaster-1
+[submodule "square-master/v2"]
+	path = square-master/v2
+	url = ./
+	branch = SquareMaster-2
+[submodule "square-master/v3"]
+	path = square-master/v3
+	url = ./
+	branch = SquareMaster-3
+[submodule "square-master/v4"]
+	path = square-master/v4
+	url = ./
+	branch = SquareMaster-4
+[submodule "square-master/v5"]
+	path = square-master/v5
+	url = ./
+	branch = SquareMaster-5
