@@ -1,3 +1,3 @@
-# 正方形大师 难度2
+# 正方形大师 难度3
 
 ![](images/SquareMaster.jpg)
