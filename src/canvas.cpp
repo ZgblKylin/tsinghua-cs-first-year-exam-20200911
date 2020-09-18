@@ -2,6 +2,7 @@
 #include "ui_canvas.h"
 
 #include <QMouseEvent>
+#include <QKeyEvent>
 #include <QPainter>
 
 Canvas::Canvas(QWidget *parent) :
@@ -56,6 +57,7 @@ void Canvas::mousePressEvent(QMouseEvent *event)
             return;
 
         selected = true; // 更新选中状态
+        grabKeyboard(); // 捕获键盘事件
 
         // 将选中正方形移至顶部
         for (int i = selectedIndex; i < count; ++i)
@@ -69,6 +71,7 @@ void Canvas::mousePressEvent(QMouseEvent *event)
     else if (event->button() == Qt::RightButton) // 单击右键取消选中
     {
         selected = false; // 更新选中状态
+        releaseKeyboard(); // 释放键盘捕获
     }
     // 请求重绘
     update();
@@ -102,7 +105,50 @@ void Canvas::mouseDoubleClickEvent(QMouseEvent *event)
 
 void Canvas::keyPressEvent(QKeyEvent *event)
 {
-    // TODO
+    // WASD 移动正方形
+    if (!selected || (count <= 0))
+        return;
+
+    switch (event->key())
+    {
+    case Qt::Key_Left:
+    case Qt::Key_A:
+    {
+        int left = squares[count - 1].left();
+        int newLeft = qMax(-30, left - 30); // 不可超出双击生成范围，即±30
+        squares[count - 1].translate(newLeft - left, 0);
+        break;
+    }
+    case Qt::Key_Right:
+    case Qt::Key_D:
+    {
+        int right = squares[count - 1].right();
+        int newRight = qMin(630, right + 30); // 不可超出双击生成范围，即±30
+        squares[count - 1].translate(newRight - right, 0);
+        break;
+    }
+    case Qt::Key_Up:
+    case Qt::Key_W:
+    {
+        int top = squares[count - 1].top();
+        int newTop = qMax(-30, top - 30); // 不可超出双击生成范围，即±30
+        squares[count - 1].translate(0, newTop - top);
+        break;
+    }
+    case Qt::Key_Down:
+    case Qt::Key_S:
+    {
+        int bottom = squares[count - 1].bottom();
+        int newBottom = qMin(630, bottom + 30); // 不可超出双击生成范围，即±30
+        squares[count - 1].translate(0, newBottom - bottom);
+        break;
+    }
+    default:
+        break;
+    }
+
+    // 请求重绘
+    update();
 }
 
 void Canvas::paintEvent(QPaintEvent *event)
