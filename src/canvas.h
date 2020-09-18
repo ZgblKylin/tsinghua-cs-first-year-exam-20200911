@@ -34,6 +34,9 @@ protected:
 
 private:
     Ui::Canvas *ui;
+
+    QRect squares[6]; // 最多6个正方形，固定尺寸、样式、遮挡关系，只需记录位置
+    int count; // 正方形数量
 };
 
 #endif // CANVAS_H
